@@ -75,18 +75,21 @@ metadata:
   name: sealed-secrets
   namespace: argocd
 spec:
-  project: default
+  destination:
+    namespace: sealed-secrets
+    server: 'https://kubernetes.default.svc'
   source:
+    path: apps
     repoURL: 'https://github.com/devops-poc-kustomize-helm/gitops-sealed-secrets.git'
     targetRevision: main
-    path: apps
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: sealed-secrets
+  sources: []
+  project: default
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
 ```
 
 * **`path: apps`** → folder containing your SealedSecrets YAMLs.
